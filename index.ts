@@ -1,8 +1,14 @@
 import express, { Express } from "express";
+import dotenv from "dotenv";
+import auth from "./src/routes/auth.route";
 
-const PORT: number = 3000;
+dotenv.config();
+
 const app: Express = express();
 
-app.listen(3000, () => {
-  console.log(`node server running..`);
+// auth route
+app.use(auth);
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server running at ${process.env.PORT}`);
 });
