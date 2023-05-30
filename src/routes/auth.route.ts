@@ -1,9 +1,8 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
+import { signup } from "../controllers/auth.controller";
 
-const auth: Router = Router();
+const authRoute: Router = Router();
 
-auth.route("/").get((req: Request, res: Response) => {
-  res.send(`Hello world`);
-});
+authRoute.route("/signup").post(signup);
 
-export default auth;
+export default authRoute;

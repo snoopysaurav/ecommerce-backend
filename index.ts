@@ -1,14 +1,24 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import auth from "./src/routes/auth.route";
+import { AppDatasource } from "./src/database/datasource";
+import authRoute from "./src/routes/auth.route";
 
 dotenv.config();
 
 const app: Express = express();
+app.use(express.json());
 
 // auth route
-app.use(auth);
+app.use(authRoute);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running at ${process.env.PORT}`);
-});
+// Database
+AppDatasource.initialize()
+  .then(() => {
+    console.log(`Database running...`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Server running at ${process.env.PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(`Error while connectiong to database...${error}`);
+  });
