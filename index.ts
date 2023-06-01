@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import { AppDatasource } from "./src/database/datasource";
 import authRoute from "./src/routes/auth.route";
+import userRoute from "./src/routes/user.route";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 // auth route
 app.use(authRoute);
+app.use(userRoute);
 
 // Database
 AppDatasource.initialize()

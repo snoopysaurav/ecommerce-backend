@@ -4,6 +4,10 @@ import UserEntity from "../database/user.entity";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import {
+  signinValidation,
+  signupValidation,
+} from "../../validations/auth.validation";
 
 dotenv.config();
 
@@ -11,9 +15,13 @@ const UserRepository = AppDatasource.getRepository(UserEntity);
 
 const signup = async (req: Request, res: Response) => {
   try {
+    const { error, value } = signupValidation.validate(req.body);
+    if (error) {
+      return res.status(400).json(error);
+    }
     const user = new UserEntity();
 
-    const { firstname, lastname, username, email, password } = req.body;
+    const { firstname, lastname, username, email, password } = value;
 
     const isEmail = await UserRepository.findOne({
       where: {
@@ -37,7 +45,7 @@ const signup = async (req: Request, res: Response) => {
       user.password = hashedPassword;
 
       await UserRepository.save(user);
-      return res.status(201).json({ msg: `User created..` });
+      return res.status(201).json({ msg: `User created..`, user });
     }
     return res.status(400).json({ msg: `Username or Email already exist..` });
   } catch (error) {
@@ -47,12 +55,17 @@ const signup = async (req: Request, res: Response) => {
 
 const signin = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { error, value } = signinValidation.validate(req.body);
+    if (error) {
+      return res.status(400).json(error);
+    }
+    const { email, password } = value;
     const user = await UserRepository.findOne({
       where: {
         email: email,
       },
     });
+    console.log(user);
     if (!user) {
       return res.status(400).json({ msg: `Incorrect Email Address.` });
     }
@@ -66,18 +79,15 @@ const signin = async (req: Request, res: Response) => {
     });
     return res
       .status(200)
-      .json({ msg: `User Signed in.`, access_token: access_token });
+      .json({ msg: `${user.username} Signed in.`, access_token: access_token });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ msg: `Internal Server Error` });
   }
 };
 
 const signout = async (req: Request, res: Response) => {
-  try {
-    const authHeader = req.headers.authorization;
-  } catch (error) {
-    return res.status(500).json({ msg: `Internal Server Error` });
-  }
+  //  signout functionality
 };
 
 export { signup, signin };
