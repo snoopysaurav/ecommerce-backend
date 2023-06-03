@@ -5,10 +5,11 @@ import {
   getSingleUser,
   updateUser,
 } from "../controllers/user.controller";
+import authMiddleware from "../middlewares/auth.middleware";
 
 const userRoute: Router = Router();
 
-userRoute.route("/user").get(getAllUsers);
+userRoute.route("/user").get(authMiddleware, getAllUsers);
 userRoute
   .route("/user/:id")
   .get(getSingleUser)

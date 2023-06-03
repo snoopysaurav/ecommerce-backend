@@ -73,8 +73,8 @@ const signin = async (req: Request, res: Response) => {
     if (!isPassword) {
       return res.status(400).json({ msg: `Incorrect Password` });
     }
-    const payload = { id: user.id, email: user.email };
-    const access_token = jwt.sign(payload, process.env.SECRET_KEY, {
+    const payload: object = { id: user.id, email: user.email };
+    const access_token: string = jwt.sign(payload, process.env.SECRET_KEY, {
       expiresIn: "2d",
     });
     return res
