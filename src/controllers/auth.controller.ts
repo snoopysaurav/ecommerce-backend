@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import {
   signinValidation,
   signupValidation,
-} from "../../validations/auth.validation";
+} from "../validations/auth.validation";
 
 dotenv.config();
 

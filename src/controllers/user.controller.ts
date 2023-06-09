@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AppDatasource } from "../database/datasource";
 import UserEntity from "../database/user.entity";
-import { updateUserValidation } from "../../validations/user.validation";
+import { updateUserValidation } from "../validations/user.validation";
 import bcrypt from "bcrypt";
 
 const UserRepository = AppDatasource.getRepository(UserEntity);
