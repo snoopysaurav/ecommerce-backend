@@ -3,7 +3,14 @@
 import { NextFunction, Request, Response } from "express";
 import formidable from "formidable";
 
-const fileMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export interface FileRequest extends Request {
+  files: any;
+}
+const fileMiddleware = (
+  req: FileRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const form = formidable({
     multiples: true,
     uploadDir: "__dirname/../uploads",
@@ -14,7 +21,9 @@ const fileMiddleware = (req: Request, res: Response, next: NextFunction) => {
       next(err);
       return;
     }
-    res.json({ fields, files });
+    const { newFilename }: any = files.productImage;
+    req.files = newFilename;
+    next();
   });
 };
 
