@@ -5,7 +5,7 @@ import UserEntity from "../database/user.entity";
 
 const UserRepository = AppDatasource.getRepository(UserEntity);
 
-interface UserRequest extends Request {
+export interface UserRequest extends Request {
   user: any;
 }
 const authMiddleware = async (

@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import UserEntity from "./user.entity";
-import CartEntity from "./cart.entity";
 
 @Entity()
 export default class ProductEntity {
@@ -14,17 +13,14 @@ export default class ProductEntity {
   brand: string;
 
   @Column()
-  image: string;
+  image?: string;
 
   @Column()
   price: number;
 
-  @Column()
+  @Column({ default: 1})
   stock: number;
 
   @ManyToOne(() => UserEntity, (user) => user.product)
-  user: UserEntity;
-
-  @ManyToOne(() => CartEntity, (cart) => cart.product)
-  cart: CartEntity;
+  user?: UserEntity;
 }
